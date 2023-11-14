@@ -1,9 +1,9 @@
 package com.dislike.controller;
 
 import com.dislike.dto.PostRequestDTO;
+import com.dislike.dto.PostWithoutPostsDTO;
 import com.dislike.model.Post;
 import com.dislike.service.PostService;
-import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    private ResponseEntity<List<Post>> findAll() {
+    private ResponseEntity<List<PostWithoutPostsDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAll());
     }
 
@@ -30,7 +30,7 @@ public class PostController {
     }
 
     @PostMapping
-    private ResponseEntity<Post> create(@RequestBody PostRequestDTO postRequest) {
+    private ResponseEntity<Object> create(@RequestBody PostRequestDTO postRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.save(postRequest.getUserId(), postRequest.getContent()));
     }
 

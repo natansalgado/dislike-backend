@@ -1,6 +1,8 @@
 package com.dislike.controller;
 
 import com.dislike.model.User;
+import com.dislike.projection.FindAllUsersProjection;
+import com.dislike.projection.UserWithPostsProjection;
 import com.dislike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users")
@@ -17,13 +18,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
+    public ResponseEntity<List<FindAllUsersProjection>> findAll() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<User>> findById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
+    public ResponseEntity<UserWithPostsProjection> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping

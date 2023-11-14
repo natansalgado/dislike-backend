@@ -1,19 +1,37 @@
 package com.dislike.service;
 
 import com.dislike.model.User;
+import com.dislike.projection.FindAllUsersProjection;
+import com.dislike.projection.UserWithPostsProjection;
+import com.dislike.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface UserService {
+@Service
+public class UserService {
 
-    User save(User user);
+    @Autowired
+    private UserRepository userRepository;
 
-    List<User> findAll();
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 
-    Optional<User> findById(Long id);
+    public List<FindAllUsersProjection> findAll() {
+        return userRepository.findAllUsersProjection();
+    }
 
-    User update(User user);
+    public UserWithPostsProjection findById(Long userId) {
+        return userRepository.findUserWithPostsById(userId);
+    }
 
-    void deleteById(Long id);
+    public User update(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
 }
