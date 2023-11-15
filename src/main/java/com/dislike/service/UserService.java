@@ -1,13 +1,16 @@
 package com.dislike.service;
 
+import com.dislike.exception.ConflictException;
 import com.dislike.model.User;
-import com.dislike.projection.FindAllUsersProjection;
-import com.dislike.projection.UserWithPostsProjection;
+import com.dislike.projection.user.FindAllProjection;
+import com.dislike.projection.user.FindByIdProjection;
 import com.dislike.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -15,16 +18,33 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public User save(User user) {
+        Optional<User> usernameInUse = userRepository.findByUsername(user.getUsername());
+
+        if (usernameInUse.isPresent()) {
+            throw new ConflictException("Username is already in use");
+        }
+
+        Optional<User> emailInUse = userRepository.findUserByEmail(user.getEmail());
+
+        if (emailInUse.isPresent()) {
+            throw new ConflictException("Email is already in use");
+        }
+
+        user.setPassword(encoder.encode(user.getPassword()));
+
         return userRepository.save(user);
     }
 
-    public List<FindAllUsersProjection> findAll() {
-        return userRepository.findAllUsersProjection();
+    public List<FindAllProjection> findAll() {
+        return userRepository.findAllUsers();
     }
 
-    public UserWithPostsProjection findById(Long userId) {
-        return userRepository.findUserWithPostsById(userId);
+    public FindByIdProjection findById(Long userId) {
+        return userRepository.findUserById(userId);
     }
 
     public User update(User user) {

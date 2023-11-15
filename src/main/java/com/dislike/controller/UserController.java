@@ -1,11 +1,10 @@
 package com.dislike.controller;
 
 import com.dislike.model.User;
-import com.dislike.projection.FindAllUsersProjection;
-import com.dislike.projection.UserWithPostsProjection;
+import com.dislike.projection.user.FindAllProjection;
+import com.dislike.projection.user.FindByIdProjection;
 import com.dislike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,28 +17,28 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<FindAllUsersProjection>> findAll() {
+    public ResponseEntity<List<FindAllProjection>> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserWithPostsProjection> findById(@PathVariable Long id) {
+    public ResponseEntity<FindByIdProjection> findById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
+        return ResponseEntity.ok(userService.save(user));
     }
 
     @PutMapping
     public ResponseEntity<User> update(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
+        return ResponseEntity.ok(userService.update(user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         userService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 }

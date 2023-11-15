@@ -1,10 +1,9 @@
 package com.dislike.service;
 
-import com.dislike.dto.PostWithoutPostsDTO;
-import com.dislike.dto.UserWithoutPostsDTO;
 import com.dislike.exception.NotFoundException;
 import com.dislike.model.Post;
 import com.dislike.model.User;
+import com.dislike.projection.post.FindAllProjection;
 import com.dislike.repository.PostRepository;
 import com.dislike.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -40,20 +38,8 @@ public class PostService {
         return toReturn;
     }
 
-    public List<PostWithoutPostsDTO> findAll() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
-                .map(post -> new PostWithoutPostsDTO(
-                        post.getId(),
-                        post.getContent(),
-                        post.getPostDate().toString(),
-                        new UserWithoutPostsDTO(
-                                post.getUser().getId(),
-                                post.getUser().getName(),
-                                post.getUser().getUsername()
-                        )
-                ))
-                .collect(Collectors.toList());
+    public List<FindAllProjection> findAll() {
+        return postRepository.findAllPosts();
     }
 
     public Optional<Post> findById(Long id) {
