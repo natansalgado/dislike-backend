@@ -6,29 +6,35 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 public class UserDetailsData implements UserDetails {
 
-    private final Optional<User> user;
+    private String username;
+    private String password;
 
-    public UserDetailsData(Optional<User> user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return user.orElse(new User()).getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.orElse(new User()).getUsername();
+        return username;
     }
 
     @Override

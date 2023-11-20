@@ -1,7 +1,6 @@
 package com.dislike.service;
 
 import com.dislike.data.UserDetailsData;
-import com.dislike.exception.NotFoundException;
 import com.dislike.model.User;
 import com.dislike.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,26 +15,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<User> userByUsername = userRepository.findByUsername(login);
+        Optional<User> userByEmail = userRepository.findUserByEmail(login);
 
-        Optional<User> user;
+        User user = userByUsername.orElseGet(() -> userByEmail.orElseThrow(() -> new UsernameNotFoundException("Invalid username or password")));
 
-       Optional<User> userByUsername = userRepository.findByUsername(login);
-       Optional<User> userByEmail = userRepository.findUserByEmail(login);
+        UserDetailsData userDetails = new UserDetailsData();
+        userDetails.setUsername(user.getUsername());
+        userDetails.setPassword(user.getPassword());
 
-       if (userByUsername.isPresent()) {
-           user = userByUsername;
-       } else if (userByEmail.isPresent()) {
-           user = userByEmail;
-       } else {
-           throw new NotFoundException("Invalid username or password");
-       }
-
-        return new UserDetailsData(user);
+        return userDetails;
     }
 }
