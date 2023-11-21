@@ -7,5 +7,7 @@ public class PostRequestDTO {
 
     private Long userId;
 
+    private Long answerTo;
+
     private String content;
 }

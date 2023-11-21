@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Table(name = "tb_posts", schema = "dislike")
@@ -25,8 +26,16 @@ public class Post {
     @Column(name = "post_date")
     private Date postDate;
 
+    @ManyToOne
+    @JoinColumn(name = "answer_to")
+    private Post answerTo;
+
     @PrePersist
     protected void onCreate(){
         postDate = new Date();
+    }
+
+    public void setAnswerTo(Post answerTo) {
+        this.answerTo = answerTo;
     }
 }

@@ -2,7 +2,7 @@ package com.dislike.projection.user;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"id", "name", "username", "email"})
+@JsonPropertyOrder({ "id", "name", "username", "email" })
 public interface FindAllProjection {
 
     Long getId();

@@ -1,5 +1,6 @@
 package com.dislike.projection.user;
 
+import com.dislike.projection.post.PostProjection;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
@@ -13,10 +14,20 @@ public interface FindByIdProjection {
     String getEmail();
     List<PostProjection> getPosts();
 
+    @JsonPropertyOrder({ "id", "content", "postDate", "answerTo" })
     interface PostProjection {
 
         Long getId();
         String getContent();
         String getPostDate();
+        PostProjection2 getAnswerTo();
+
+        @JsonPropertyOrder({ "id", "content", "postDate" })
+        interface PostProjection2 {
+
+            Long getId();
+            String getContent();
+            String getPostDate();
+        }
     }
 }
