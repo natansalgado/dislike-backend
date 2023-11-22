@@ -5,6 +5,7 @@ import com.dislike.model.Post;
 import com.dislike.projection.post.PostProjection;
 import com.dislike.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +38,10 @@ public class PostController {
     @DeleteMapping("/{id}")
     private ResponseEntity<?> delete(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/answers")
+    private ResponseEntity<?> findAnswers(@RequestParam("id") Long id, @RequestParam("offset") int offset, @RequestParam("limit") int limit) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.findAnswers(id, offset, limit));
     }
 }

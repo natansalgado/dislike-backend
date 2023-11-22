@@ -8,10 +8,12 @@ import com.dislike.projection.post.PostProjection;
 import com.dislike.repository.PostRepository;
 import com.dislike.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -61,5 +63,10 @@ public class PostService {
 
     public void deleteById(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public Page<PostProjection> findAnswers(Long id, int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        return postRepository.findAnswers(id, pageable);
     }
 }
