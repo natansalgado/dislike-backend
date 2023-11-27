@@ -36,6 +36,7 @@ public class PostService {
         Post post = new Post();
         post.setUser(user);
         post.setContent(data.getContent());
+        post.setLikes(0);
 
         if (answerTo != null) {
             post.setAnswerTo(answerTo);

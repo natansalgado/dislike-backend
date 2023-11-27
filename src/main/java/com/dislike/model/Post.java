@@ -1,5 +1,6 @@
 package com.dislike.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +26,9 @@ public class Post {
     @Temporal(TemporalType.DATE)
     @Column(name = "post_date")
     private Date postDate;
+
+    @Column
+    private int likes;
 
     @ManyToOne
     @JoinColumn(name = "answer_to")

@@ -2,13 +2,14 @@ package com.dislike.projection.post;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({ "id", "content", "postDate", "user", "answerTo" })
+@JsonPropertyOrder({ "id", "content", "postDate", "user", "likes", "answerTo" })
 public interface PostProjection {
 
     Long getId();
     String getContent();
     String getPostDate();
     UserProjection getUser();
+    int getLikes();
     AnswerToProjection getAnswerTo();
 
     @JsonPropertyOrder({ "id", "name", "username" })
