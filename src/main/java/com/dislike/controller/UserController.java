@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users")
@@ -43,5 +44,14 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/loggedin")
+    public ResponseEntity<Optional<User>> getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        if (username != null) {
+            return ResponseEntity.ok(userService.findByUsername(username));
+        }
+        return null;
     }
 }

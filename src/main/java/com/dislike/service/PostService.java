@@ -31,15 +31,13 @@ public class PostService {
             throw new NotFoundException("User not found");
         }
 
-        Post answerTo = postRepository.findById(data.getAnswerTo()).orElse(null);
-
         Post post = new Post();
         post.setUser(user);
         post.setContent(data.getContent());
         post.setLikes(0);
 
-        if (answerTo != null) {
-            post.setAnswerTo(answerTo);
+        if (data.getAnswerTo() != null) {
+            post.setAnswerTo(postRepository.findById(data.getAnswerTo()).orElse(null));
         }
 
         Post toReturn = postRepository.save(post);
@@ -69,5 +67,30 @@ public class PostService {
     public Page<PostProjection> findAnswers(Long id, int offset, int limit) {
         Pageable pageable = PageRequest.of(offset, limit);
         return postRepository.findAnswers(id, pageable);
+    }
+
+    public boolean likePost(Long userId, Long postId) {
+        Post postLiked = postRepository.findById(postId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (postLiked != null && user != null) {
+            List<Post> likedPosts = user.getLiked();
+
+            if (likedPosts.contains(postLiked)) {
+                likedPosts.remove(postLiked);
+                user.setLiked(likedPosts);
+                postLiked.setLikes(postLiked.getLikes() - 1);
+            } else {
+                likedPosts.add(postLiked);
+                user.setLiked(likedPosts);
+                postLiked.setLikes(postLiked.getLikes() + 1);
+            }
+
+            userRepository.save(user);
+            postRepository.save(postLiked);
+            return true;
+        }
+
+        return false;
     }
 }

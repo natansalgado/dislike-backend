@@ -13,7 +13,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answerTo as answerTo, u as user " +
-            "FROM Post p LEFT JOIN p.user u LEFT JOIN p.answerTo a")
+            "FROM Post p LEFT JOIN p.user u LEFT JOIN p.answerTo a ORDER BY p.postDate DESC")
     List<PostProjection> findAllPosts();
 
     @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answerTo as answerTo, u as user " +

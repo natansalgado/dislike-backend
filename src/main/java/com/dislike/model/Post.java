@@ -23,7 +23,7 @@ public class Post {
     @Column(length = 1000)
     private String content;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "post_date")
     private Date postDate;
 

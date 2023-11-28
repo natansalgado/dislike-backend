@@ -25,6 +25,7 @@ public class PostController {
         return ResponseEntity.ok(postService.findAll());
     }
 
+
     @GetMapping("/{id}")
     private ResponseEntity<PostProjection> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findById(id));
@@ -43,5 +44,10 @@ public class PostController {
     @GetMapping("/answers")
     private ResponseEntity<?> findAnswers(@RequestParam("id") Long id, @RequestParam("offset") int offset, @RequestParam("limit") int limit) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAnswers(id, offset, limit));
+    }
+
+    @PostMapping("/like/{userId}/{postId}")
+    private ResponseEntity<?> likePost(@PathVariable Long userId, @PathVariable Long postId) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.likePost(userId, postId));
     }
 }

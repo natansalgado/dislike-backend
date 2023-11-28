@@ -19,11 +19,12 @@ public interface PostProjection {
         String getUsername();
     }
 
-    @JsonPropertyOrder({ "id", "content", "postDate", "user" })
+    @JsonPropertyOrder({ "id", "content", "postDate", "likes", "user" })
     interface AnswerToProjection {
         Long getId();
         String getContent();
         String getPostDate();
+        int getLikes();
         UserProjection getUser();
     }
 }
