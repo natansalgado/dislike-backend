@@ -30,6 +30,12 @@ public class Post {
     @Column
     private int likes;
 
+    @Column
+    private int answers;
+
+    @Column
+    private boolean available;
+
     @ManyToOne
     @JoinColumn(name = "answer_to")
     private Post answerTo;

@@ -35,9 +35,14 @@ public class PostService {
         post.setUser(user);
         post.setContent(data.getContent());
         post.setLikes(0);
+        post.setAnswers(0);
+        post.setAvailable(true);
 
         if (data.getAnswerTo() != null) {
-            post.setAnswerTo(postRepository.findById(data.getAnswerTo()).orElse(null));
+            Post answerTo = postRepository.findById(data.getAnswerTo()).orElse(null);
+            post.setAnswerTo(answerTo);
+            answerTo.setAnswers(answerTo.getAnswers() + 1);
+            postRepository.save(answerTo);
         }
 
         Post toReturn = postRepository.save(post);

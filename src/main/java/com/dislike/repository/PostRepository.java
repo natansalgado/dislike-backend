@@ -12,14 +12,14 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answerTo as answerTo, u as user " +
+    @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answers as answers, p.available as available, p.answerTo as answerTo, u as user " +
             "FROM Post p LEFT JOIN p.user u LEFT JOIN p.answerTo a ORDER BY p.postDate DESC")
     List<PostProjection> findAllPosts();
 
-    @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answerTo as answerTo, u as user " +
+    @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answers as answers, p.available as available, p.answerTo as answerTo, u as user " +
             "FROM Post p LEFT JOIN p.user u LEFT JOIN p.answerTo a WHERE p.id = :id")
     PostProjection findPostById(@Param("id") Long id);
 
-    @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.answerTo as answerTo, u as user FROM Post p LEFT JOIN p.user u WHERE p.answerTo.id = :answerToId")
+    @Query("SELECT p.id as id, p.content as content, p.postDate as postDate, p.likes as likes, p.answers as answers, p.available as available, p.answerTo as answerTo, u as user FROM Post p LEFT JOIN p.user u WHERE p.answerTo.id = :answerToId ORDER BY p.postDate DESC")
     Page<PostProjection> findAnswers(@Param("answerToId") Long answerToId, Pageable pageable);
 }
