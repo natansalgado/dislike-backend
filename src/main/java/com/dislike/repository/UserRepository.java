@@ -2,7 +2,7 @@ package com.dislike.repository;
 
 import com.dislike.model.User;
 import com.dislike.projection.user.FindAllProjection;
-import com.dislike.projection.user.FindByIdProjection;
+import com.dislike.projection.user.FindByUsernameProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,6 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u.id AS id, u.name AS name, u.username AS username, u.email AS email FROM User u")
     List<FindAllProjection> findAllUsers();
 
-    @Query("SELECT u FROM User u LEFT JOIN u.posts p WHERE u.id = :userId")
-    FindByIdProjection findUserById(Long userId);
+    @Query("SELECT u FROM User u LEFT JOIN u.posts p WHERE u.username = :username")
+    FindByUsernameProjection findUserByUsername(String username);
 }

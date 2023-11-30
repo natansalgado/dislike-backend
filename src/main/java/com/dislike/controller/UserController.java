@@ -2,13 +2,11 @@ package com.dislike.controller;
 
 import com.dislike.model.User;
 import com.dislike.projection.user.FindAllProjection;
-import com.dislike.projection.user.FindByIdProjection;
+import com.dislike.projection.user.FindByUsernameProjection;
 import com.dislike.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +23,9 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FindByIdProjection> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+    @GetMapping("/{username}")
+    public ResponseEntity<FindByUsernameProjection> findById(@PathVariable String username) {
+        return ResponseEntity.ok(userService.findUserByUsername(username));
     }
 
     @PostMapping

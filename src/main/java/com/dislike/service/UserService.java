@@ -3,7 +3,7 @@ package com.dislike.service;
 import com.dislike.exception.ConflictException;
 import com.dislike.model.User;
 import com.dislike.projection.user.FindAllProjection;
-import com.dislike.projection.user.FindByIdProjection;
+import com.dislike.projection.user.FindByUsernameProjection;
 import com.dislike.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,8 +43,8 @@ public class UserService {
         return userRepository.findAllUsers();
     }
 
-    public FindByIdProjection findById(Long userId) {
-        return userRepository.findUserById(userId);
+    public FindByUsernameProjection findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     public User update(User user) {

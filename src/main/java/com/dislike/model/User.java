@@ -28,6 +28,12 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column(nullable = true)
+    private String bio;
+
+    @Column(nullable = true)
+    private String image;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 

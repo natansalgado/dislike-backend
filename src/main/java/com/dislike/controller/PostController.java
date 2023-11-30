@@ -25,6 +25,20 @@ public class PostController {
         return ResponseEntity.ok(postService.findAll());
     }
 
+    @GetMapping("/user/answers/{id}")
+    private ResponseEntity<List<PostProjection>> findUserAnswers(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.findUserPostsWhereAnswerToIsNotNull(id));
+    }
+
+    @GetMapping("/user/liked/{id}")
+    private ResponseEntity<List<Post>> findLikedPostsByUser(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getLikedPostsProjectionByUserId(id));
+    }
+
+    @GetMapping("/user/{id}")
+    private ResponseEntity<List<PostProjection>> findUserPosts(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.findUserPostsWhereAnswerToIsNull(id));
+    }
 
     @GetMapping("/{id}")
     private ResponseEntity<PostProjection> findById(@PathVariable Long id) {

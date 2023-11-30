@@ -13,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -34,9 +36,6 @@ public class PostService {
         Post post = new Post();
         post.setUser(user);
         post.setContent(data.getContent());
-        post.setLikes(0);
-        post.setAnswers(0);
-        post.setAvailable(true);
 
         if (data.getAnswerTo() != null) {
             Post answerTo = postRepository.findById(data.getAnswerTo()).orElse(null);
@@ -97,5 +96,22 @@ public class PostService {
         }
 
         return false;
+    }
+
+    public List<PostProjection> findUserPostsWhereAnswerToIsNull(Long userId) {
+        return postRepository.findUserPostsWhereAnswerToIsNull(userId);
+    }
+
+    public List<PostProjection> findUserPostsWhereAnswerToIsNotNull(Long userId) {
+        return postRepository.findUserPostsWhereAnswerToIsNotNull(userId);
+    }
+
+    public List<Post> getLikedPostsProjectionByUserId(Long userId) {
+        List<Post> posts = postRepository.findPostsLikedByUserId(userId);
+
+        posts.forEach(post -> post.getUser().setPosts(null));
+        posts.forEach(post -> post.getUser().setLiked(null));
+
+        return posts;
     }
 }

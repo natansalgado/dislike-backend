@@ -28,13 +28,13 @@ public class Post {
     private Date postDate;
 
     @Column
-    private int likes;
+    private int likes = 0;
 
     @Column
-    private int answers;
+    private int answers = 0;
 
-    @Column
-    private boolean available;
+    @Column()
+    private boolean available = true;
 
     @ManyToOne
     @JoinColumn(name = "answer_to")
